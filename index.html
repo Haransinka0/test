@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optiic OCR - Free Text Recognition</title>
+    <meta name="description" content="Extract text from images instantly with our free OCR tool powered by Optiic API">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="32" height="32" rx="8" fill="url(#logo-gradient)" />
+                        <path d="M8 12h16M8 16h16M8 20h10" stroke="white" stroke-width="2" stroke-linecap="round" />
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32">
+                                <stop offset="0%" stop-color="#06b6d4" />
+                                <stop offset="100%" stop-color="#3b82f6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span>Optiic OCR</span>
+                </div>
+                <nav class="nav">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#how-it-works" class="nav-link">How It Works</a>
+                    <a href="https://optiic.dev" target="_blank" class="nav-link">Documentation</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 0L10 6L16 8L10 10L8 16L6 10L0 8L6 6L8 0Z" fill="currentColor" />
+                    </svg>
+                    <span>100% Free • No API Key Required</span>
+                </div>
+                <h1 class="hero-title">
+                    Extract Text from Images
+                    <span class="gradient-text">Instantly</span>
+                </h1>
+                <p class="hero-description">
+                    Powerful OCR technology at your fingertips. Upload any image and get accurate text recognition in
+                    seconds. No registration, no limits, completely free.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- OCR Tool Section -->
+    <section class="ocr-section">
+        <div class="container">
+            <div class="ocr-card">
+                <!-- Upload Area -->
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <div class="upload-content" id="uploadContent">
+                        <div class="upload-icon">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                                <rect x="8" y="16" width="48" height="40" rx="4" stroke="url(#upload-gradient)"
+                                    stroke-width="2" fill="none" />
+                                <path d="M32 28V44M32 28L26 34M32 28L38 34" stroke="url(#upload-gradient)"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <defs>
+                                    <linearGradient id="upload-gradient" x1="8" y1="16" x2="56" y2="56">
+                                        <stop offset="0%" stop-color="#06b6d4" />
+                                        <stop offset="100%" stop-color="#3b82f6" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <h3 class="upload-title">Drop your image here</h3>
+                        <p class="upload-subtitle">or click to browse</p>
+                        <p class="upload-formats">Supports: JPG, PNG, WEBP, BMP</p>
+                    </div>
+                    <div class="preview-container" id="previewContainer" style="display: none;">
+                        <img id="previewImage" src="" alt="Preview">
+                        <button class="remove-btn" id="removeBtn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button class="extract-btn" id="extractBtn" disabled>
+                    <span class="btn-text">Extract Text</span>
+                    <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
+                <!-- Loading State -->
+                <div class="loading-state" id="loadingState" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing image and extracting text...</p>
+                </div>
+
+                <!-- Results Area -->
+                <div class="results-area" id="resultsArea" style="display: none;">
+                    <div class="results-header">
+                        <h3>Extracted Text</h3>
+                        <button class="copy-btn" id="copyBtn">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <rect x="6" y="6" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"
+                                    fill="none" />
+                                <path d="M12 6V4a2 2 0 00-2-2H4a2 2 0 00-2 2v6a2 2 0 002 2h2" stroke="currentColor"
+                                    stroke-width="1.5" />
+                            </svg>
+                            <span>Copy</span>
+                        </button>
+                    </div>
+                    <div class="results-content" id="resultsContent"></div>
+                    <div class="results-meta" id="resultsMeta"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose Optiic OCR?</h2>
+                <p class="section-subtitle">Powerful features designed for simplicity and accuracy</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M16 4v24M8 12l8-8 8 8" stroke="url(#feat1)" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <defs>
+                                <linearGradient id="feat1" x1="8" y1="4" x2="24" y2="28">
+                                    <stop offset="0%" stop-color="#06b6d4" />
+                                    <stop offset="100%" stop-color="#3b82f6" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">No Registration</h3>
+                    <p class="feature-description">Start extracting text immediately. No sign-up, no API keys, no
+                        hassle.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <circle cx="16" cy="16" r="12" stroke="url(#feat2)" stroke-width="2" fill="none" />
+                            <path d="M16 8v8l4 4" stroke="url(#feat2)" stroke-width="2" stroke-linecap="round" />
+                            <defs>
+                                <linearGradient id="feat2" x1="4" y1="4" x2="28" y2="28">
+                                    <stop offset="0%" stop-color="#06b6d4" />
+                                    <stop offset="100%" stop-color="#3b82f6" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Lightning Fast</h3>
+                    <p class="feature-description">Get results in seconds with our optimized OCR processing pipeline.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M4 16h24M16 4l8 12-8 12-8-12 8-12z" stroke="url(#feat3)" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <defs>
+                                <linearGradient id="feat3" x1="4" y1="4" x2="28" y2="28">
+                                    <stop offset="0%" stop-color="#06b6d4" />
+                                    <stop offset="100%" stop-color="#3b82f6" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">High Accuracy</h3>
+                    <p class="feature-description">Advanced AI models ensure precise text recognition from any image.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <rect x="6" y="6" width="20" height="20" rx="4" stroke="url(#feat4)" stroke-width="2"
+                                fill="none" />
+                            <path d="M12 16h8M16 12v8" stroke="url(#feat4)" stroke-width="2" stroke-linecap="round" />
+                            <defs>
+                                <linearGradient id="feat4" x1="6" y1="6" x2="26" y2="26">
+                                    <stop offset="0%" stop-color="#06b6d4" />
+                                    <stop offset="100%" stop-color="#3b82f6" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Multiple Formats</h3>
+                    <p class="feature-description">Support for JPG, PNG, WEBP, BMP and other popular image formats.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">Three simple steps to extract text from any image</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3 class="step-title">Upload Image</h3>
+                    <p class="step-description">Drag and drop your image or click to browse from your device.</p>
+                </div>
+                <div class="step-arrow">
+                    <svg width="40" height="24" viewBox="0 0 40 24" fill="none">
+                        <path d="M0 12h36m0 0l-8-8m8 8l-8 8" stroke="url(#arrow-grad)" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="arrow-grad" x1="0" y1="12" x2="40" y2="12">
+                                <stop offset="0%" stop-color="#06b6d4" />
+                                <stop offset="100%" stop-color="#3b82f6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3 class="step-title">Process</h3>
+                    <p class="step-description">Our AI analyzes the image and extracts all readable text content.</p>
+                </div>
+                <div class="step-arrow">
+                    <svg width="40" height="24" viewBox="0 0 40 24" fill="none">
+                        <path d="M0 12h36m0 0l-8-8m8 8l-8 8" stroke="url(#arrow-grad2)" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="arrow-grad2" x1="0" y1="12" x2="40" y2="12">
+                                <stop offset="0%" stop-color="#06b6d4" />
+                                <stop offset="100%" stop-color="#3b82f6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3 class="step-title">Get Results</h3>
+                    <p class="step-description">Copy the extracted text and use it wherever you need.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <div class="logo">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="32" height="32" rx="8" fill="url(#footer-gradient)" />
+                            <path d="M8 12h16M8 16h16M8 20h10" stroke="white" stroke-width="2" stroke-linecap="round" />
+                            <defs>
+                                <linearGradient id="footer-gradient" x1="0" y1="0" x2="32" y2="32">
+                                    <stop offset="0%" stop-color="#06b6d4" />
+                                    <stop offset="100%" stop-color="#3b82f6" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <span>Optiic OCR</span>
+                    </div>
+                    <p class="footer-description">Free OCR tool powered by Optiic API</p>
+                </div>
+                <div class="footer-right">
+                    <p>&copy; 2026 Optiic OCR. Built with ❤️</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
